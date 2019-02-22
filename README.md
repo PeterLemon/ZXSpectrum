@@ -12,6 +12,7 @@ I also use a tool called Image Spectrumizer, which I use to convert GFX to the Z
 https://github.com/jarikomppa/img2spec<br />
 <br />
 Special thanks to Dobo/spec-chum, who has helped me get into ZX Spectrum Coding =D<br />
+Check out his github here: https://github.com/spec-chum<br />
 <br />
 Check out Retro Programming for useful tips on Z80 Coding here: http://www.retroprogramming.com<br />
 Also check out World of Spectrum here: https://www.worldofspectrum.org<br />
