@@ -8,7 +8,7 @@ constant SCR_COL($5800) // $5800..$5AFF: Screen Memory - Color Data (768 Bytes)
 constant PRN_BUF($5B00) // $5B00..$5BFF: Printer Buffer (256 Bytes)
 constant SYS_VAR($5C00) // $5C00..$5CBF: System Variables (192 Bytes)
                         // $5CC0..$5CCA: Reserved (10 Bytes)
-constant SYS_RAM($5CCB) // $5C00..$FF57: System RAM (Program) (40KB)
+constant SYS_RAM($5CCB) // $5CCB..$FF57: System RAM (Program) (40KB)
 constant RAM_TOP($FF58) // $FF58..$FFFF: Reserved (168 Bytes)
 
 // Screen Bitmap Color Attributes (%FBPPPIII: F = FLASH Mode, B = BRIGHTNESS Mode, P = PAPER Color, I = INK Color)

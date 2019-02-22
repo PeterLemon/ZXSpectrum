@@ -30,7 +30,7 @@ dw $0000 // IY Register
 dw $0000 // IX Register
 db $00   // Interrupt Flipflop, 0 = DI, 1..255 = EI
 db $00   // IFF2
-db $00   // Bit 0..1: Interrupt Mode (0, 1, 2)
+db $01   // Bit 0..1: Interrupt Mode (0, 1, 2)
          // Bit 2   : 1 = Issue 2 Emulation
          // Bit 3   : 1 = Double Interrupt Frequency
          // Bit 4..5: 0 = Normal, 1 = High Video Synchronisation, 2 = Normal, 3 = Low Video Synchronisation

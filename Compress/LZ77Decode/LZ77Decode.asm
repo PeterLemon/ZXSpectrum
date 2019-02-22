@@ -9,7 +9,7 @@ macro seek(variable offset) {
   base offset
 }
 
-seek($5B00) ; Start: // Entry Point Of Code
+seek($5CCB) ; Start: // Entry Point Of Code
 include "LIB/ZXSPECTRUM.INC" // Include ZX Spectrum Definitions
 
 // Decode LZ77/LZSS Data To Screen Bitmap & Color Area
