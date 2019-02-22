@@ -20,7 +20,7 @@ Please check out Speccy by Marat Fayzullin, an accurate ZX Spectrum emulator wit
 https://fms.komkon.org/Speccy<br />
 <br />
 Howto Compile:<br />
-All the code compiles into a single binary (DISKNAME.Z80) file.<br />
+All the code compiles into a single binary (TAPENAME.Z80) file.<br />
 Using bass Run: make.bat<br />
 <br />
 Howto Run:<br />
