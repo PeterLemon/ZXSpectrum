@@ -26,20 +26,20 @@ FillCOL:
 ld de,255*256+191
 XLOOP:
   push de
-  ld hl,-180   // x-coordinate
+  ld hl,-180 // X Coordinate
   ld e,d
   call SCALE
   ld (XPOS),bc
   pop de
 YLOOP:
   push de
-  ld hl,-96    // y-coordinate
+  ld hl,-96  // Y Coordinate
   call SCALE
   ld (YPOS),bc
   ld hl,0
   ld (IMAG),hl
   ld (REAL),hl
-  ld b,15      // iterations
+  ld b,15 // Iterations
 ITER:
   push bc
   ld bc,(IMAG)
@@ -68,13 +68,13 @@ ITER:
   call ABSVAL
   add hl,de
   ld a,h
-  cp 46        // 46 ? 2 x V 2 << 4
+  cp 46 // 46 ~= 2 * V 2 << 4
   pop bc
   jr nc,ESCAPE
   djnz ITER
   pop de
   call PLOT
-  db 254       // trick to skip next instruction
+  db 254 // Trick To Skip Next Instruction ("cp $D1" Instruction On Return From CALL)
 ESCAPE:
   pop de
   dec e
@@ -83,7 +83,7 @@ ESCAPE:
   jr nz,XLOOP
   ret
 
-FIXMUL:        // hl = hl x de >> 24
+FIXMUL: // HL = HL * DE >> 24
   call MULT16BY16
   ld a,b
   ld b,4
@@ -93,12 +93,12 @@ FMSHIFT:
   djnz FMSHIFT 
   ret
 
-SCALE:         // bc = (hl + e) × zoom
+SCALE: // BC = (HL + E) * Zoom
   ld d,0
   add hl,de
-  ld de,48     // zoom
+  ld de,48 // Zoom
 
-MULT16BY16:    // hl:bc (signed 32 bit) = hl x de
+MULT16BY16: // HL:BC (Signed 32-Bit) = HL * DE
   xor a
   call ABSVAL
   ex de,hl
@@ -134,7 +134,7 @@ MULT16BY16:    // hl:bc (signed 32 bit) = hl x de
   sbc hl,de
   ret
 
-MULT8BY16:     // returns a:hl (24 bit) = a x de
+MULT8BY16: // Return A:HL (24-Bit) = A * DE
   ld hl,0
   ld b,8
 M816LOOP:
@@ -147,7 +147,7 @@ M816SKIP:
   djnz M816LOOP
   ret
 
-PLOT:          // plot d = x-axis, e = y-axis
+PLOT: // Plot Pixel (D = X Position, E = Y Position)
   ld a,7
   and d
   ld b,a
@@ -179,8 +179,8 @@ PLOTBIT:
   ld (hl),a
   ret
 
-ABSVAL:        // returns hl = |hl| and increments
-  bit 7,h      // a if the sign bit changed
+ABSVAL: // Returns HL = |HL|, Increments A IF Sign Bit Has Changed
+  bit 7,h
   ret z
   ld b,h
   ld c,l
