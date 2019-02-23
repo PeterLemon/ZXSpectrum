@@ -1,4 +1,5 @@
 // ZX Spectrum Plot Pixel demo by krom (Peter Lemon):
+// Original Code by John Metcalf
 arch zxs.cpu
 output "PlotPixel.z80", create
 include "LIB/Z80_HEADER.ASM" // Include .Z80 Header (30 Bytes)
@@ -22,9 +23,38 @@ FillCOL:
   jr nz,FillCOL // IF (Bit 3 Of Screen Color Address MSB != 0) Fill Color
 
 // Plot Pixel In Screen Bitmap Area
-ld hl,SCR_BMP+$810 // HL = Screen Bitmap Area Address ($4000+$810)
-ld a,%10000000     // A = Bitmap Byte (1st Pixel Set)
-ld (hl),a          // Store Bitmap Byte (A) To Screen Color Area Address (HL)
+ld de,$8060 // DE = XY Position (X = 128, Y = 96)
+
+PLOT: // Plot Pixel (D = X Position, E = Y Position)
+  ld a,7
+  and d
+  ld b,a
+  inc b
+  ld a,e
+  rra
+  scf
+  rra
+  or a
+  rra
+  ld l,a
+  xor e
+  and 248
+  xor e
+  ld h,a
+  ld a,d
+  xor l
+  and 7
+  xor d
+  rrca
+  rrca
+  rrca
+  ld l,a
+  ld a,1
+PLOTBIT:
+  rrca
+  djnz PLOTBIT
+  or (hl)
+  ld (hl),a
 
 Loop:
   jr Loop
