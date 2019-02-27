@@ -96,7 +96,7 @@ ReadKeyboard: // Read Keyboard (A = Character Byte Code From Pressed Key)
     ld e,5    // E = Key Count (Number Of Keys In Row = 5)
     ReadKey:
       srl a          // Logical Shift A Right, Carry Flag = Bit 0
-      jr nc,KeyFound // IF (Carry = 0): Key Found
+      jr nc,KeyFound // IF (Carry Flag = 0): Key Found
       inc hl         // ELSE: Increment Keyboard Map Address (HL++) For Next Table Address
       dec e          // Decrement Key Count (E--)
       jr nz,ReadKey  // IF (Key Count != 0) Read Key
