@@ -1,5 +1,4 @@
 // ZX Spectrum Hello World Text Printing demo by krom (Peter Lemon):
-// Original Code by John Metcalf
 arch zxs.cpu
 output "HelloWorld.z80", create
 include "LIB/Z80_HEADER.ASM" // Include .Z80 Header (30 Bytes)
