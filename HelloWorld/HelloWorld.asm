@@ -28,10 +28,10 @@ ld ix,Text // IX = Text Offset
 
 LoopText:
   ld h,0 // H = 0
-  ld l,(ix+$00) // HL = Text Character Address
+  ld l,(ix+$00) // L = Next Text Character (L = IX[0])
   add hl,hl // HL *= 8
   add hl,hl
-  add hl,hl
+  add hl,hl // HL = Text Character Address
 
   ld a,Font8x8-($20*8) // A = Font Address LSB
   add a,l // A += L
