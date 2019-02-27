@@ -44,11 +44,11 @@ LoopText:
     dec de // Decrement Screen Bitmap Area Address (DE--) (8 Pixels Back)
     inc d  // Increment Screen Bitmap Area Address MSB (D++) (1 Scanline Down)
     ldi    // Copy Text Character Data To Screen Bitmap Area (LD (DE),(HL), DE++, HL++, BC--)
-    djnz LoopTextByte // Decrement Count (B--), IF (Count != 0): Loop Text Byte
+    djnz LoopTextByte // Decrement Count (B--), IF (Count != 0) Loop Text Byte
 
   xor a // A = 0
   cp c  // Compare C To A
-  jr z,TextEnd // IF (Z Flag Set): Text End
+  jr z,TextEnd // IF (Z Flag Set) Text End
 
   ld a,-7 // A = -7
   add a,d // Subtract 7 From Screen Bitmap Area Address MSB (D -= 7) (7 Scanlines Up)

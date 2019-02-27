@@ -44,11 +44,11 @@ LoopText:
     dec de // Decrement Screen Bitmap Area Address (DE--) (8 Pixels Back)
     inc d  // Increment Screen Bitmap Area Address MSB (D++) (1 Scanline Down)
     ldi    // Copy Text Character Data To Screen Bitmap Area (LD (DE),(HL), DE++, HL++, BC--)
-    djnz LoopTextByte // Decrement Count (B--), IF (Count != 0): Loop Text Byte
+    djnz LoopTextByte // Decrement Count (B--), IF (Count != 0) Loop Text Byte
 
   xor a // A = 0
   cp c  // Compare C To A
-  jr z,TextEnd // IF (Z Flag Set): Text End
+  jr z,TextEnd // IF (Z Flag Set) Text End
 
   ld a,-7 // A = -7
   add a,d // Subtract 7 From Screen Bitmap Area Address MSB (D -= 7) (7 Scanlines Up)
@@ -61,7 +61,7 @@ Loop:
   // Print Keyboard Text Character To Screen Bitmap Area
   call ReadKeyboard // A = Character Byte Code From Pressed Key
   cp 0 // Compare A To 0
-  jr z,Skip // IF (A = 0): Skip
+  jr z,Skip // IF (A = 0) Skip
 
   ld de,SCR_BMP+24+(32*3)+($800*1) // DE = Screen Bitmap Area Address ($4000..$57FF) (Starting Position Of Text: COLUMN = 24, ROW = 3, SCREEN BLOCK = 1)
   ld h,0 // H = 0
@@ -79,7 +79,7 @@ Loop:
     dec de // Decrement Screen Bitmap Area Address (DE--) (8 Pixels Back)
     inc d  // Increment Screen Bitmap Area Address MSB (D++) (1 Scanline Down)
     ldi    // Copy Text Character Data To Screen Bitmap Area (LD (DE),(HL), DE++, HL++, BC--)
-    djnz LoopKeyTextByte // Decrement Count (B--), IF (Count != 0): Loop Key Text Byte
+    djnz LoopKeyTextByte // Decrement Count (B--), IF (Count != 0) Loop Key Text Byte
 
   Skip:
     jr Loop
@@ -96,7 +96,7 @@ ReadKeyboard: // Read Keyboard (A = Character Byte Code From Pressed Key)
     ld e,5    // E = Key Count (Number Of Keys In Row = 5)
     ReadKey:
       srl a          // Logical Shift A Right, Carry Flag = Bit 0
-      jr nc,KeyFound // IF (Carry Flag = 0): Key Found
+      jr nc,KeyFound // IF (Carry Flag = 0) Key Found
       inc hl         // ELSE: Increment Keyboard Map Address (HL++) For Next Table Address
       dec e          // Decrement Key Count (E--)
       jr nz,ReadKey  // IF (Key Count != 0) Read Key
