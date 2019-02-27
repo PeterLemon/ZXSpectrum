@@ -33,12 +33,10 @@ LoopText:
   add hl,hl
   add hl,hl // HL = Text Character Address
 
-  ld a,Font8x8-($20*8) // A = Font Address LSB
-  add a,l // A += L
-  ld l,a  // L = A
-  ld a,Font8x8-($20*8)>>8 // A = Font Address MSB
-  adc a,h // A += H + Carry
-  ld h,a  // H = A
+  ld a,c // A = Byte Copy Count (C)
+  ld bc,Font8x8-($20*8) // BC = Font Address
+  add hl,bc // Text Character Address (HL) += Font Address (BC)
+  ld c,a // C = Byte Copy Count (A)
 
   ld b,7 // B = Count (7)
   ldi    // Copy Text Character Data To Screen Bitmap Area (LD (DE),(HL), DE++, HL++, BC--)
@@ -72,12 +70,8 @@ Loop:
   add hl,hl
   add hl,hl // HL = Text Character Address
 
-  ld a,Font8x8-($20*8) // A = Font Address LSB
-  add a,l // A += L
-  ld l,a  // L = A
-  ld a,Font8x8-($20*8)>>8 // A = Font Address MSB
-  adc a,h // A += H + Carry
-  ld h,a  // H = A
+  ld bc,Font8x8-($20*8) // BC = Font Address
+  add hl,bc // Text Character Address (HL) += Font Address (BC)
 
   ld b,7 // B = Count (7)
   ldi    // Copy Text Character Data To Screen Bitmap Area (LD (DE),(HL), DE++, HL++, BC--)
