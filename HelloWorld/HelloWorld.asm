@@ -35,13 +35,9 @@ LoopText:
 
   ld a,Font8x8-($20*8) // A = Font Address LSB
   add a,l // A += L
-  jr nc,NoIncrement
-  inc h   // IF (Carry Set): H++
-  NoIncrement:
   ld l,a  // L = A
-
   ld a,Font8x8-($20*8)>>8 // A = Font Address MSB
-  add a,h // A += H
+  adc a,h // A += H + Carry
   ld h,a  // H = A
 
   ld b,7 // B = Count (7)
