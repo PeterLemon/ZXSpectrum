@@ -88,7 +88,7 @@ ReadJoystickKempston: // Read Joystick Kempston (A = Character Byte Code From Pr
   ld hl,KempstonMap // HL = Kempston Map Address
   in a,($1F) // A = Buttons From Kempston Port ($1F)
   and $1F    // A &= $1F (Mask 1st 5 Bits)
-  ld b,5     // B = Button Count (Number Of Buttons In Row = 5)
+  ld b,5     // B = Button Count (Number Of Buttons = 5)
   ReadButton:
     srl a            // Logical Shift A Right, Carry Flag = Bit 0
     jr c,ButtonFound // IF (Carry Flag = 1) Button Found
