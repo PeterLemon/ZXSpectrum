@@ -86,28 +86,29 @@ Loop:
 
 ReadJoystickCursor: // Read Joystick Cursor (A = Character Byte Code From Pressed Button)
   ld hl,CursorMap // HL = Cursor Map Address
-  ld d,2          // D = Cursor ROW Count (Number Of Cursor Ports To Check = 2)
-  ld c,$FE        // C = Cursor Port LSB Address (Always $FE For Reading Cursor Ports)
-  ReadPort:
-    ld b,(hl) // B = Cursor Port MSB Address From Table (BC = Cursor Port)
-    inc hl    // Increment Cursor Map Address (HL++) To Get Button List
-    in a,(c)  // A = Row Of Buttons From Cursor Port (BC)
-    and $1F   // A &= $1F (Mask 1st 5 Bits)
-    ld b,5    // B = Button Count (Number Of Buttons In Row = 5)
-    ReadButton:
-      srl a             // Logical Shift A Right, Carry Flag = Bit 0
-      jr nc,ButtonFound // IF (Carry Flag = 0) Button Found
-      inc hl            // ELSE: Increment Cursor Map Address (HL++) For Next Table Address
-      djnz ReadButton   // Decrement Button Count (B--), IF (Button Count != 0) Read Button
-      dec d             // Decrement Cursor ROW Count (D--)
-      jr nz,ReadPort    // IF (Cursor ROW Count != 0) Read Port
-      ret               // Button Not Found: A = 0
-    ButtonFound:
-      ld a,(hl) // Button Found: A = Character Byte Code
-      ret
+  ld bc,$F7FE // BC = Cursor Address A ($F7FE)
+  in a,(c)    // A = Buttons From Cursor Address A (BC)
+  and $10     // A &= $10 (Mask Bit 4)
+  srl a       // A >>= 3
+  srl a
+  srl a
+  ld d,a      // D = A
+  ld b,$EF    // BC = Cursor Address B ($EFFE)
+  in a,(c)    // A = Buttons From Cursor Address B (BC)
+  and $1D     // A &= $1D (Mask Bits 0,2,3,4)
+  or d        // A |= D
+  ld b,5      // B = Button Count (Number Of Buttons = 5)
+  ReadButton:
+    srl a             // Logical Shift A Right, Carry Flag = Bit 0
+    jr nc,ButtonFound // IF (Carry Flag = 0) Button Found
+    inc hl            // ELSE: Increment Cursor Map Address (HL++) For Next Table Address
+    djnz ReadButton   // Decrement Button Count (B--), IF (Button Count != 0) Read Button
+    ret               // Button Not Found: A = 0
+  ButtonFound:
+    ld a,(hl) // Button Found: A = Character Byte Code
+    ret
 CursorMap:
-  db $F7, " "," "," "," ","L" // ROW 0: Cursor Port MSB, Character 0..4
-  db $EF, "F"," ","R","U","D" // ROW 1: Cursor Port MSB, Character 0..4
+  db "F","L","R","U","D" // Character 0..4
 
 Text:
   db "Joystick Cursor Input = \d \d" // Joystick Cursor Input Text (27 Bytes)
