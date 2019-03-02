@@ -39,7 +39,19 @@ ld hl,Sprite // HL = Sprite Address
 ld de,$8050  // DE = Sprite Position On Screen (D = X Position, E = Y Position)
 
 PutSprite:
-  ld c,16
+  ld a,e            // A = Sprite Y Position (E)
+  and $C0           // A &= $C0 (Bits 6 & 7)
+  cp $C0            // Compare A To $C0
+  jp z,PutSpriteEnd // IF (Sprite Y Position >= 192) Put Sprite End (Sprite Fully Off Screen)
+  ld c,16           // C = Sprite Scanlines To Draw
+  ld a,e            // A = Sprite Y Position (E)
+  and $B0           // A &= $B0 (Bits 4,5 & 7)
+  cp $B0            // Compare A To $B0
+  jp nz,NextLine    // IF (Sprite Y Position < 176) Next Line
+  ld c,e            // C = Sprite Y Position (E)
+  ld a,192          // A = 192
+  sub c             // A -= C
+  ld c,a            // C = Sprite Scanlines To Draw (Y Clip)
 NextLine:
   ld a,d
   and 7
@@ -116,6 +128,7 @@ Clip:
   inc e
   dec c
   jr nz,NextLine
+PutSpriteEnd:
 
 Loop:
   jr Loop
