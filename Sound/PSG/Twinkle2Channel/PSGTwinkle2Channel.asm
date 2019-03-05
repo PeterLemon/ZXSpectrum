@@ -27,7 +27,7 @@ ld d,PSG_MODE_VOL_A // D = PSG Channel A Mode/Volume Address ($08)
 ld e,$0F            // E = PSG Channel A Mode/Volume (Bit 4 Mode = 0, Bits 0..3 Volume = 15)
 call PSGWrite       // PSG Write Data (D = PSG Address, E = PSG Data)
 
-ld d,PSG_MODE_VOL_B // D = PSG Channel B Mode/Volume Address ($08)
+ld d,PSG_MODE_VOL_B // D = PSG Channel B Mode/Volume Address ($09)
 ld e,$0F            // E = PSG Channel B Mode/Volume (Bit 4 Mode = 0, Bits 0..3 Volume = 15)
 call PSGWrite       // PSG Write Data (D = PSG Address, E = PSG Data)
 
