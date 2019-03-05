@@ -17,22 +17,22 @@ di   // Disable Interrupts
 im 1 // Set Interrupt Mode 1
 ei   // Enable Interrupts
 
-// Setup Channel 1 Tone
+// Setup Channel A Tone
 ld d,PSG_MODE_VOL_A // D = PSG Channel A Mode/Volume Address ($08)
 ld e,$0F            // E = PSG Channel A Mode/Volume (Bit 4 Mode = 0, Bits 0..3 Volume = 15)
 call PSGWrite       // PSG Write Data (D = PSG Address, E = PSG Data)
 
 LoopSong:
-  ld de,SONGCHAN1 // DE = SONGCHAN1 16-Bit Address
+  ld de,SONGCHANA // DE = SONGCHANA 16-Bit Address
 
-  PSGCHAN1: // PSG Channel 1
-    ld a,(de) // A = Channel 1: Period Table Offset
+  PSGCHAN1: // PSG Channel A
+    ld a,(de) // A = Channel A: Period Table Offset
     cp SUST // Compare A To SUST Character ($FE)
-    jr z,PSGCHAN1End // IF (A == REST) Channel 1: PSGCHAN1 End
+    jr z,PSGCHAN1End // IF (A == REST) Channel A: PSGCHAN1 End
     cp REST // Compare A To REST Character ($FF)
-    jr z,PSGCHAN1Rest // IF (A == REST) Channel 1: PSGCHAN1 Rest
+    jr z,PSGCHAN1Rest // IF (A == REST) Channel A: PSGCHAN1 Rest
 
-    // ELSE Channel 1: Key ON
+    // ELSE Channel A: Key ON
     ld b,$00 // B = $00
     ld c,a   // C = A
     ld hl,PeriodTable // HL = PeriodTable 16-Bit Address
@@ -56,7 +56,7 @@ LoopSong:
     ld a,PSG_COARSE_TUNE_A // A = PSG Channel A Course Tune Address ($01)
     ld b,AY8912_ADDR>>8    // BC = AY8912 Address Port ($FFFD)
     out (c),a              // Write PSG Address (A) To AY8912 Address Port (BC)
-    ld a,(hl)              // A = Channel 1: Frequency Hi (Bits 0..3)
+    ld a,(hl)              // A = Channel A Course Tune
     ld b,AY8912_WRITE>>8   // BC = AY8912 Write Data Port ($BFFD)
     out (c),a              // Write PSG Data (A) To AY8912 Write Data Port (BC)
 
@@ -85,7 +85,7 @@ LoopSong:
     
   inc de // DE++ (Increment Song Offset)
 
-  ld a,SongEnd>>8 // IF (Song Offset != Song End) PSG Channel 1
+  ld a,SongEnd>>8 // IF (Song Offset != Song End) PSG Channel A
   cp d
   jr nz,PSGCHAN1
   ld a,SongEnd
@@ -240,7 +240,7 @@ dw $020,$01E,$01D,$01B,$019,$018,$016,$015,$014,$013,$012,$011 // A7..G8#
 dw $010,$00F,$00E,$00D,$00C,$00B,$00A,$009,$008,$007,$006,$005 // A8..G9#
 
 SongStart:
-  SONGCHAN1: // PSG Channel A Tone Song Data At 250ms (15 VSYNCS)
+  SONGCHANA: // PSG Channel A Tone Song Data At 250ms (15 VSYNCS)
     db C5, REST, C5, REST, G5, REST, G5, REST, A5, REST, A5, REST, G5, SUST, SUST, REST // 1. Twinkle Twinkle Little Star...
     db F5, REST, F5, REST, E5, REST, E5, REST, D5, REST, D5, REST, C5, SUST, SUST, REST // 2.   How I Wonder What You Are...
     db G5, REST, G5, REST, F5, REST, F5, REST, E5, REST, E5, REST, D5, SUST, SUST, REST // 3.  Up Above The World So High...
