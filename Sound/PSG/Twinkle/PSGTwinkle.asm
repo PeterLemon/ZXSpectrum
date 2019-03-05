@@ -25,12 +25,12 @@ call PSGWrite       // PSG Write Data (D = PSG Address, E = PSG Data)
 LoopSong:
   ld de,SONGCHANA // DE = SONGCHANA 16-Bit Address
 
-  PSGCHAN1: // PSG Channel A
+  PSGCHANA: // PSG Channel A
     ld a,(de) // A = Channel A: Period Table Offset
     cp SUST // Compare A To SUST Character ($FE)
-    jr z,PSGCHAN1End // IF (A == REST) Channel A: PSGCHAN1 End
+    jr z,PSGCHANAEnd // IF (A == REST) Channel A: PSGCHANA End
     cp REST // Compare A To REST Character ($FF)
-    jr z,PSGCHAN1Rest // IF (A == REST) Channel A: PSGCHAN1 Rest
+    jr z,PSGCHANARest // IF (A == REST) Channel A: PSGCHANA Rest
 
     // ELSE Channel A: Key ON
     ld b,$00 // B = $00
@@ -66,16 +66,16 @@ LoopSong:
     ld a,%00111110       // A = PSG Channel A Tone Enable (Bits 6..7 Port A/B Mode, Bits 3..5 Channel A..C Enable Noise, Bits 0..2 Channel A..C Enable Tone)
     ld b,AY8912_WRITE>>8 // BC = AY8912 Write Data Port ($BFFD)
     out (c),a            // Write PSG Data (A) To AY8912 Write Data Port (BC)
-    jr PSGCHAN1End
+    jr PSGCHANAEnd
 
-  PSGCHAN1Rest:
+  PSGCHANARest:
     ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)
     ld bc,AY8912_ADDR    // BC = AY8912 Address Port ($FFFD)
     out (c),a            // Write PSG Address (A) To AY8912 Address Port (BC)
     ld a,%00111111       // A = PSG Channel A Tone Enable (Bits 6..7 Port A/B Mode, Bits 3..5 Channel A..C Enable Noise, Bits 0..2 Channel A..C Enable Tone)
     ld b,AY8912_WRITE>>8 // BC = AY8912 Write Data Port ($BFFD)
     out (c),a            // Write PSG Data (A) To AY8912 Write Data Port (BC)
-  PSGCHAN1End:
+  PSGCHANAEnd:
 
   // 250 MS Delay (15 VSYNCS)
   ld b,15 // B = Count
@@ -87,10 +87,10 @@ LoopSong:
 
   ld a,SongEnd>>8 // IF (Song Offset != Song End) PSG Channel A
   cp d
-  jr nz,PSGCHAN1
+  jr nz,PSGCHANA
   ld a,SongEnd
   cp e
-  jr nz,PSGCHAN1
+  jr nz,PSGCHANA
 
   jr LoopSong // Loop Song
 
