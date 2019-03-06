@@ -35,17 +35,17 @@ LoopSong:
   ld de,SONGCHANA // DE = SONGCHANA 16-Bit Address
 
   PSGCHANA: // PSG Channel A
-    ld a,(de) // A = Channel A: Period Table Offset
-    cp SUST // Compare A To SUST Character ($FE)
-    jr z,PSGCHANAEnd // IF (A == REST) Channel A: PSGCHANA End
-    cp REST // Compare A To REST Character ($FF)
+    ld a,(de)         // A = Channel A: Period Table Offset
+    cp SUST           // Compare A To SUST Character ($FE)
+    jr z,PSGCHANAEnd  // IF (A == REST) Channel A: PSGCHANA End
+    cp REST           // Compare A To REST Character ($FF)
     jr z,PSGCHANARest // IF (A == REST) Channel A: PSGCHANA Rest
 
     // ELSE Channel A: Key ON
-    ld b,$00 // B = $00
-    ld c,a   // C = A
+    ld b,$00          // B = $00
+    ld c,a            // C = Period Table Offset (A)
     ld hl,PeriodTable // HL = PeriodTable 16-Bit Address
-    add hl,bc // HL += BC
+    add hl,bc         // HL += BC
 
     ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)
     ld bc,AY8912_ADDR    // BC = AY8912 Address Port ($FFFD)
@@ -95,17 +95,17 @@ LoopSong:
   ld e,l
 
   PSGCHANB: // PSG Channel B
-    ld a,(de) // A = Channel B: Period Table Offset
-    cp SUST // Compare A To SUST Character ($FE)
-    jr z,PSGCHANBEnd // IF (A == REST) Channel B: PSGCHANB End
-    cp REST // Compare A To REST Character ($FF)
+    ld a,(de)         // A = Channel B: Period Table Offset
+    cp SUST           // Compare A To SUST Character ($FE)
+    jr z,PSGCHANBEnd  // IF (A == REST) Channel B: PSGCHANB End
+    cp REST           // Compare A To REST Character ($FF)
     jr z,PSGCHANBRest // IF (A == REST) Channel B: PSGCHANB Rest
 
     // ELSE Channel B: Key ON
-    ld b,$00 // B = $00
-    ld c,a   // C = A
+    ld b,$00          // B = $00
+    ld c,a            // C = Period Table Offset (A)
     ld hl,PeriodTable // HL = PeriodTable 16-Bit Address
-    add hl,bc // HL += BC
+    add hl,bc         // HL += BC
 
     ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)
     ld bc,AY8912_ADDR    // BC = AY8912 Address Port ($FFFD)
