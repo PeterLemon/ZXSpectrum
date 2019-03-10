@@ -9,7 +9,7 @@ macro seek(variable offset) {
   base offset
 }
 
-macro ChannelPattern(CHANNEL, KEY, PERIODTABLE) { // Channel Pattern Calculation
+macro ChannelPatternTone(CHANNEL, KEY, PERIODTABLE) { // Channel Pattern Tone Calculation
   ld l,(ix+({KEY}*2))   // L = Pattern List (LSB)
   ld h,(ix+({KEY}*2)+1) // H = Pattern List (MSB)
   add hl,de // HL += Pattern Offset Index (DE)
@@ -120,9 +120,9 @@ LoopSong:
   ld b,AY8912_WRITE>>8     // BC = AY8912 Write Data Port ($BFFD)
   out (c),a                // Write PSG Data (A) To AY8912 Write Data Port (BC)
 
-  ChannelPattern(A, 0, PeriodTable) // Channel A Pattern Calculation: Channel, Key, Period Table
-  ChannelPattern(B, 1, PeriodTable) // Channel B Pattern Calculation: Channel, Key, Period Table
-  ChannelPattern(C, 2, PeriodTable) // Channel C Pattern Calculation: Channel, Key, Period Table
+  ChannelPatternTone(A, 0, PeriodTable) // Channel A Tone Pattern Calculation: Channel, Key, Period Table
+  ChannelPatternTone(B, 1, PeriodTable) // Channel B Tone Pattern Calculation: Channel, Key, Period Table
+  ChannelPatternTone(C, 2, PeriodTable) // Channel C Tone Pattern Calculation: Channel, Key, Period Table
 
   // Delay (VSYNCS)
   ld b,MaxQuant/20 // B = Count
@@ -367,7 +367,7 @@ PATTERN00: // Pattern 00: Rest (Channel A..C)
   db REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST // 15
   db REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST, REST // 16
 
-PATTERN01: // Pattern 01: Synth Harp (Channel A)
+PATTERN01: // Pattern 01: Synth Harp (Channel A Tone)
   db  C2, D2,  E2, G2,  C3, D3,  E3, G3,  C4, D4,  E4, G4,  C5, D5,  E5, G5 // 1
   db  C6, G5,  E5, D5,  C5, G4,  E4, D4,  C4, G3,  E3, D3,  C3, G2,  E2, D2 // 2
   db  A1, B1,  C2, E2,  A2, B2,  C3, E3,  A3, B3,  C4, E4,  A4, B4,  C5, E5 // 3
@@ -385,7 +385,7 @@ PATTERN01: // Pattern 01: Synth Harp (Channel A)
   db B1b, D2,  F2, A2, B2b, D3,  F3, A3, B3b, D4,  F4, A4, B4b, D5,  F5, A5 // 15
   db B5b, A5,  F5, D5, B4b, A4,  F4, D4, B3b, A3,  F3, D3, B2b, A2,  F2, D2 // 16
 
-PATTERN02: // Pattern 02: Flute (Channel B)
+PATTERN02: // Pattern 02: Flute (Channel B Tone)
   db   E4, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 17
   db   D4, SUST, SUST, SUST, SUST, SUST, SUST, REST,   F4, SUST, SUST, SUST, SUST, SUST, SUST, REST // 18
   db   E4, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 19
@@ -402,7 +402,7 @@ PATTERN02: // Pattern 02: Flute (Channel B)
   db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 30
   db  E4b, SUST, SUST, SUST,   D4, SUST,   C4, SUST,  B3b, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 31
   db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 32
-PATTERN03: // Pattern 03: Strings (Channel B)
+PATTERN03: // Pattern 03: Strings (Channel B Tone)
   db   E5, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 33
   db   D5, SUST, SUST, SUST, SUST, SUST, SUST, REST,   F5, SUST, SUST, SUST, SUST, SUST, SUST, REST // 34
   db   E5, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 35
@@ -420,7 +420,24 @@ PATTERN03: // Pattern 03: Strings (Channel B)
   db   G5, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 47
   db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 48
 
-PATTERN04: // Pattern 04: FrenchHorn (Channel C)
+PATTERN04: // Pattern 04: Oboe (Channel C Tone)
+  db   C4, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 17
+  db   B3, SUST, SUST, SUST, SUST, SUST, SUST, REST,   D4, SUST, SUST, SUST, SUST, SUST, SUST, REST // 18
+  db   C4, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 19
+  db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 20
+  db   C4, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 21
+  db   B3, SUST, SUST, SUST, SUST, SUST, SUST, REST,   D4, SUST, SUST, SUST, SUST, SUST, SUST, REST // 22
+  db   D4, SUST,   E4, SUST,   C4, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 23
+  db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 24
+  db   A3, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 25
+  db   G3, SUST, SUST, SUST, SUST, SUST, SUST, REST,   A3, SUST, SUST, SUST, SUST, SUST, SUST, REST // 26
+  db   B3, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST,   C4, SUST, SUST, REST // 27
+  db   D4, SUST, SUST, SUST, SUST, SUST, SUST, REST,   G4, SUST, SUST, SUST, SUST, SUST, SUST, REST // 28
+  db   F4, SUST, SUST, SUST,  E4b, SUST,   D4, SUST,   C4, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 29
+  db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 30
+  db   G4, SUST, SUST, SUST,   F4, SUST,  E4b, SUST,   D4, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 31
+  db SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 32
+PATTERN05: // Pattern 05: FrenchHorn (Channel C Tone)
   db   C5, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, REST // 33
   db   B4, SUST, SUST, SUST, SUST, SUST, SUST, REST,   D5, SUST, SUST, SUST, SUST, SUST, SUST, REST // 34
   db   C5, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST, SUST // 35
@@ -441,6 +458,6 @@ PATTERN04: // Pattern 04: FrenchHorn (Channel C)
 PATTERNLIST:
   dw PATTERN01,PATTERN00,PATTERN00 // Channel A..C Pattern Address List
 PATTERNLISTLOOP:
-  dw PATTERN01,PATTERN02,PATTERN00 // Channel A..C Pattern Address List
-  dw PATTERN01,PATTERN03,PATTERN04 // Channel A..C Pattern Address List
+  dw PATTERN01,PATTERN02,PATTERN04 // Channel A..C Pattern Address List
+  dw PATTERN01,PATTERN03,PATTERN05 // Channel A..C Pattern Address List
 PATTERNLISTEND:
