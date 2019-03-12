@@ -37,7 +37,7 @@ LoopSong:
   PSGCHANA: // PSG Channel A
     ld a,(de)         // A = Channel A: Period Table Offset
     cp SUST           // Compare A To SUST Character ($FE)
-    jr z,PSGCHANAEnd  // IF (A == REST) Channel A: PSGCHANA End
+    jr z,PSGCHANAEnd  // IF (A == SUST) Channel A: PSGCHANA End
 
     // Key OFF
     ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)
@@ -91,7 +91,7 @@ LoopSong:
   PSGCHANB: // PSG Channel B
     ld a,(de)         // A = Channel B: Period Table Offset
     cp SUST           // Compare A To SUST Character ($FE)
-    jr z,PSGCHANBEnd  // IF (A == REST) Channel B: PSGCHANB End
+    jr z,PSGCHANBEnd  // IF (A == SUST) Channel B: PSGCHANB End
 
     // Key OFF
     ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)

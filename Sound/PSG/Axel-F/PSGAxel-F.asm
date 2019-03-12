@@ -16,7 +16,7 @@ macro ChannelPatternTone(CHANNEL, KEY, PERIODTABLE) { // Channel Pattern Tone Ca
 
   ld a,(hl)      // A = Period Table Offset
   cp SUST        // Compare A To SUST Character ($FE)
-  jr z,{#}KEYEND // IF (A == REST) Key End
+  jr z,{#}KEYEND // IF (A == SUST) Key End
 
   // Key OFF
   ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)
@@ -70,7 +70,7 @@ macro ChannelPatternNoise(KEY) { // Channel Pattern Noise Calculation
 
   ld a,(hl)      // A = Period Table Offset
   cp SUST        // Compare A To SUST Character ($FE)
-  jr z,{#}KEYEND // IF (A == REST) Key End
+  jr z,{#}KEYEND // IF (A == SUST) Key End
 
   // Key OFF
   ld a,PSG_KEY         // A = PSG Channel Enable Address ($07)
