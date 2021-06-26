@@ -85,8 +85,7 @@ LoopSong:
 
   ld hl,SongEnd-SongStart
   add hl,de
-  ld d,h
-  ld e,l
+  ex de,hl // Exchange DE/HL
 
   PSGCHANB: // PSG Channel B
     ld a,(de)         // A = Channel B: Period Table Offset
@@ -139,8 +138,7 @@ LoopSong:
 
   ld hl,-(SongEnd-SongStart)
   add hl,de
-  ld d,h
-  ld e,l
+  ex de,hl // Exchange DE/HL
 
   // 250 MS Delay (15 VSYNCS)
   ld b,15 // B = Count
